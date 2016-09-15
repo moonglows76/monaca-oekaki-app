@@ -1,0 +1,63 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <script src="components/loader.js"></script>
+    <link rel="stylesheet" href="components/loader.css">
+    <link rel="stylesheet" href="css/style.css">
+    <script>
+        $(function(){
+            var myCanvas = $("#my-canvas").get(0);
+            var myContext = myCanvas.getContext("2d");
+            myContext.strokeStyle = "red";
+            myContext.lineWidth = 5;
+
+            var startX = 0;
+            var startY = 0;
+            var offsetLeft = $("#my-canvas").offset().left;
+            var offsetTop = $("#my-canvas").offset().top;
+            
+            $("#red").on("touchstart", function(){
+                console.log("赤");
+                myContext.strokeStyle = "red";
+            });
+            $("#blue").on("touchstart", function(){
+                console.log("青");
+                myContext.strokeStyle = "blue";
+            });
+            $("#green").on("touchstart", function(){
+                console.log("緑");
+                myContext.strokeStyle = "green";
+            });
+            
+            $("#my-canvas").on("touchstart",function(event){
+                event.preventDefault(event);
+                var pageX = event.originalEvent.touches[0].pageX;
+                var pageY = event.originalEvent.touches[0].pageY;
+                startX = pageX - offsetLeft;
+                startY = pageY - offsetTop;
+            }).on("touchmove", function(event){
+                var pageX = event.originalEvent.touches[0].pageX;
+                var pageY = event.originalEvent.touches[0].pageY;
+                var endX = pageX - offsetLeft;
+                var endY = pageY - offsetTop;
+                myContext.beginPath();
+                myContext.moveTo(startX, startY);
+                myContext.lineTo(endX, endY);
+                myContext.stroke();
+                startX = endX;
+                startY = endY;
+            });
+        });
+    </script>
+</head>
+<body>
+    <div class="buttons">
+        <div class="mybutton" id="red"></div>
+    	<div class="mybutton" id="blue"></div>
+    	<div class="mybutton" id="green"></div>
+    </div>
+    <canvas id="my-canvas" width="300" height="300"></canvas>
+</body>
+</html>
